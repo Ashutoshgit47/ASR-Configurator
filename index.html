@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description"
+        content="ASR Configurator - Configure Microsoft Defender Attack Surface Reduction rules with an easy-to-use visual interface. Generate PowerShell, Group Policy, and Intune configurations.">
+    <meta name="keywords"
+        content="ASR, Attack Surface Reduction, Windows Defender, Security, Microsoft, PowerShell, Intune, Group Policy">
+    <meta name="author" content="ASR Configurator">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="theme-color" content="#3B82F6">
+    <title>ASR Configurator - Attack Surface Reduction Rules Configuration Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="google-site-verification" content="5jhD5jimxXLLwDPE3Tf0DTh3f5Fziy0CVbkLmWwKbMU" />
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="text-primary-500">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--primary)" stroke="var(--primary)" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M2 17L12 22L22 17" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                <path d="M2 12L12 17L22 12" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            ASR Configurator
+        </div>
+        <nav>
+            <a class="nav-link active" onclick="navigate('configurator', event)">Configurator</a>
+            <a class="nav-link" onclick="navigate('why', event)">Why ASR Matters</a>
+            <a class="nav-link" onclick="navigate('how', event)">How to Use</a>
+            <a class="nav-link" onclick="navigate('about', event)">About</a>
+        </nav>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+        <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"
+            aria-expanded="false" aria-controls="mobile-nav">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+        <a class="nav-link active" onclick="navigateMobile('configurator')" tabindex="0">Configurator</a>
+        <a class="nav-link" onclick="navigateMobile('why')" tabindex="0">Why ASR Matters</a>
+        <a class="nav-link" onclick="navigateMobile('how')" tabindex="0">How to Use</a>
+        <a class="nav-link" onclick="navigateMobile('about')" tabindex="0">About</a>
+    </nav>
+
+    <main>
+        <!-- Page 1: Configurator -->
+        <div id="configurator-page" class="page active">
+            <!-- Sidebar Overlay -->
+            <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+            <!-- Sidebar Toggle FAB -->
+            <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Open rules sidebar"
+                aria-controls="sidebar">☰</button>
+
+            <div class="config-container">
+                <aside class="sidebar" id="sidebar" role="complementary" aria-label="Rules sidebar">
+                    <button class="sidebar-close" onclick="toggleSidebar()" aria-label="Close sidebar">✕</button>
+                    <div class="sidebar-header">
+                        <select id="preset-select" class="preset-select">
+                            <option value="disabled">Preset: Disabled (All Off)</option>
+                            <option value="basic" selected>Preset: Basic Protection</option>
+                            <option value="balanced">Preset: Balanced (Recommended)</option>
+                            <option value="strict">Preset: Strict Protection</option>
+                            <option value="developer">Preset: Developer-Friendly</option>
+                        </select>
+                    </div>
+
+                    <div class="enable-all-container">
+                        <input type="checkbox" id="enable-all" style="width: 18px; height: 18px; cursor: pointer;">
+                        <label for="enable-all" style="cursor: pointer; font-weight: 600;">Enable All Rules</label>
+                    </div>
+
+                    <div class="rules-list" id="rules-list">
+                        <!-- Rules injected by JS -->
+                    </div>
+                </aside>
+
+                <section class="config-main">
+                    <div id="rule-detail-container" class="rule-detail-card">
+                        <!-- Rule details injected by JS -->
+                        <div style="text-align: center; color: var(--text-secondary); margin-top: 2rem;">
+                            <h3>Select a rule to configure</h3>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="code-panel" id="code-panel">
+                <div class="resizer" id="resizer"></div>
+                <div class="code-header">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('powershell', event)">
+                            PowerShell
+                            <span class="info-icon"
+                                title="Run in elevated PowerShell. Best for single machines.">?</span>
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('gpo', event)">
+                            Group Policy
+                            <span class="info-icon" title="Import into Group Policy. Best for domains.">?</span>
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('intune', event)">
+                            Intune
+                            <span class="info-icon" title="Import JSON to Intune. Best for cloud/M365.">?</span>
+                        </button>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-outline" onclick="clearConfig()">Clear Code</button>
+                        <button class="btn btn-primary" onclick="copyCode()">Copy Code</button>
+                    </div>
+                </div>
+                <div class="code-content">
+                    <pre id="code-output"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Why ASR Matters -->
+        <div id="why-page" class="page">
+            <div class="container">
+                <h1>Why ASR Matters</h1>
+                <p>Understanding Attack Surface Reduction and its role in modern cybersecurity.</p>
+                <br>
+                <div class="card">
+                    <h3 class="card-title">What is Attack Surface Reduction?</h3>
+                    <p>Attack surfaces are all the places where your organization is vulnerable to cyber threats and
+                        attacks. Attack Surface Reduction (ASR) rules target software behaviors that are often abused
+                        by attackers, such as:</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                        <li>Launching executable files and scripts that attempt to download or run files</li>
+                        <li>Running obfuscated or otherwise suspicious scripts</li>
+                        <li>Performing behaviors that apps don't usually initiate during normal day-to-day work</li>
+                    </ul>
+                </div>
+
+                <h2>Rule Reference</h2>
+                <div id="educational-rules-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: How to Use -->
+        <div id="how-page" class="page">
+            <div class="container">
+                <h1>How to Use ASR Configurator</h1>
+                <br>
+                <div class="card">
+                    <h3 class="card-title">Step 1: Select a Preset</h3>
+                    <p>Start by choosing a preset that matches your environment from the dropdown menu in the sidebar.
+                    </p>
+                    <ul>
+                        <li><b>Basic:</b> Minimal impact, safe for all users.</li>
+                        <li><b>Balanced (Recommended):</b> Good security posture with low risk of breaking apps.</li>
+                        <li><b>Strict:</b> Maximum security, high risk of false positives.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Step 2: Customize Rules</h3>
+                    <p>Click on individual rules in the sidebar to view details and adjust their mode:</p>
+                    <ul>
+                        <li><b>Block:</b> High security. The action is stopped.</li>
+                        <li><b>Audit:</b> Monitoring only. The action is allowed but logged. Use this to test rules.
+                        </li>
+                        <li><b>Disabled:</b> The rule is turned off.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Step 3: Generate &amp; Apply Code</h3>
+                    <p>Select your deployment method from the bottom tabs:</p>
+                    <table>
+                        <tr>
+                            <th>Method</th>
+                            <th>Best For</th>
+                            <th>How to Apply</th>
+                        </tr>
+                        <tr>
+                            <td data-label="Method">PowerShell</td>
+                            <td data-label="Best For">Single Machines / Testing</td>
+                            <td data-label="How to Apply">Open PowerShell as Admin, paste the code, and run.</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Method">Group Policy</td>
+                            <td data-label="Best For">Active Directory Domains</td>
+                            <td data-label="How to Apply">Save as .reg file and import, or manually configure in GPO
+                                Editor.</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Method">Intune</td>
+                            <td data-label="Best For">Cloud / M365 Devices</td>
+                            <td data-label="How to Apply">Copy JSON and import into Endpoint Security &gt; ASR Policy.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: About -->
+        <div id="about-page" class="page">
+            <div class="container">
+                <h1>About ASR Configurator</h1>
+                <br>
+
+                <div class="card tool-info-card">
+                    <h3 class="card-title">🛡️ What is ASR Configurator?</h3>
+                    <p>ASR Configurator is a powerful, user-friendly tool designed to help IT administrators, security
+                        professionals, and Windows users configure Microsoft Defender's Attack Surface Reduction (ASR)
+                        rules with ease.</p>
+                    <p>The tool simplifies the complex process of managing ASR rules by providing an intuitive visual
+                        interface, preset configurations, and export options for multiple deployment methods.</p>
+                </div>
+
+                <div class="card tool-info-card">
+                    <h3 class="card-title">✨ Key Features</h3>
+                    <ul class="feature-list">
+                        <li><strong>Visual Rule Configuration:</strong> Select and configure 17 ASR rules with a simple
+                            click-based interface</li>
+                        <li><strong>Multiple Presets:</strong> Choose from Disabled, Basic, Balanced, Strict, or
+                            Developer-Friendly security presets</li>
+                        <li><strong>Three Export Formats:</strong> Generate ready-to-use code for PowerShell, Group
+                            Policy (Registry), or Microsoft Intune</li>
+                        <li><strong>Risk Assessment:</strong> Each rule is categorized by risk level (Low, Medium, High,
+                            Critical) to help you make informed decisions</li>
+                        <li><strong>Educational Content:</strong> Learn about each rule's purpose and real-world attack
+                            scenarios it protects against</li>
+                        <li><strong>Dark/Light Theme:</strong> Toggle between themes for comfortable viewing in any
+                            environment</li>
+                        <li><strong>Responsive Design:</strong> Works perfectly on desktop, tablet, and mobile devices
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card tool-info-card">
+                    <h3 class="card-title">🎯 Who Is This Tool For?</h3>
+                    <div class="audience-grid">
+                        <div class="audience-item">
+                            <span class="audience-icon">👨‍💼</span>
+                            <strong>IT Administrators</strong>
+                            <p>Quickly deploy ASR configurations across enterprise environments</p>
+                        </div>
+                        <div class="audience-item">
+                            <span class="audience-icon">🔒</span>
+                            <strong>Security Professionals</strong>
+                            <p>Harden Windows endpoints against common attack vectors</p>
+                        </div>
+                        <div class="audience-item">
+                            <span class="audience-icon">💻</span>
+                            <strong>Home Users</strong>
+                            <p>Enhance personal computer security with guided presets</p>
+                        </div>
+                        <div class="audience-item">
+                            <span class="audience-icon">📚</span>
+                            <strong>Students & Learners</strong>
+                            <p>Understand ASR rules and their impact on system security</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card tool-info-card">
+                    <h3 class="card-title">⚙️ How It Works</h3>
+                    <ol class="steps-list">
+                        <li><strong>Select a Preset:</strong> Start with a baseline configuration that matches your
+                            security needs</li>
+                        <li><strong>Customize Rules:</strong> Fine-tune individual rules by setting them to Block,
+                            Audit, or Disabled</li>
+                        <li><strong>Choose Export Format:</strong> Select PowerShell for single machines, Group Policy
+                            for domains, or Intune for cloud-managed devices</li>
+                        <li><strong>Copy & Deploy:</strong> Copy the generated code and apply it using your preferred
+                            method</li>
+                    </ol>
+                </div>
+
+                <div class="card disclaimer-card">
+                    <h3 class="card-title">⚠️ Important Disclaimer</h3>
+                    <p>This tool is provided for <strong>educational and informational purposes only</strong>. Before
+                        deploying ASR rules in a production environment:</p>
+                    <ul>
+                        <li>Always test rules in <strong>Audit mode</strong> first to identify potential compatibility
+                            issues</li>
+                        <li>Review Microsoft's official documentation for the latest updates on ASR rules</li>
+                        <li>Ensure you have proper backups and recovery procedures in place</li>
+                        <li>No responsibility is accepted for system issues caused by improper configuration</li>
+                    </ul>
+                </div>
+
+                <div class="card tool-info-card">
+                    <h3 class="card-title">👨‍💻 Developer</h3>
+                    <div class="developer-info">
+                        <p><strong>Ashutosh Gautam</strong></p>
+                        <p>Cybersecurity Enthusiast & Developer</p>
+                        <div class="developer-links">
+                            <a href="https://github.com/Ashutoshgit47" target="_blank" rel="noopener noreferrer"
+                                class="github-link">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                </svg>
+                                GitHub Profile
+                            </a>
+                            <a href="https://github.com/Ashutoshgit47/ASR-Configurator" target="_blank"
+                                rel="noopener noreferrer" class="github-link">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                </svg>
+                                Project Repository
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div id="toast" class="toast">Configuration copied to clipboard!</div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

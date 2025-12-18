@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://asrconfig.pages.dev/sitemap.xml
