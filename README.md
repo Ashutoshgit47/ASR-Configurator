@@ -127,3 +127,9 @@ If you find this project useful:
 💡 Suggest improvements
 
 🔁 Share with others interested in Windows security
+
+If this tool saved you time or helped secure your systems, consider buying me a coffee or chai — it keeps the project alive and motivates future updates! ☕🍵
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y11V9RQ2)
+
+[![Buy Me A Chai](https://buymeachai.ezee.li/assets/images/buymeachai-button.png)](https://buymeachai.ezee.li/ashutosh47)
