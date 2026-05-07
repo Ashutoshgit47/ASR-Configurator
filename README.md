@@ -3,7 +3,7 @@
 
 ## 🛡️ ASR Configurator
 
-Live Demo: 🌐  https://asrconfigugrator.pages.dev , https://asrconfig.pages.dev , https://asrconfigurator.pages.dev
+Live Demo: 🌐  https://asrconfigurator.pages.dev
 
 ASR Configurator is a modern, interactive web tool designed to help users understand, configure, and deploy Microsoft Defender Attack Surface Reduction (ASR) rules with confidence.
 
