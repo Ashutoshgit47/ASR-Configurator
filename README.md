@@ -2,8 +2,8 @@
 
 A modern, interactive web tool to help you understand, configure, and deploy Microsoft Defender Attack Surface Reduction (ASR) rules with confidence.
 
-🌐 **Live Demo:** [asrconfigurator.pages.dev](https://ashutoshgit47.github.io/ASR-Configurator ,
-https://asrconfigurator.pages.dev)
+🌐 **Live Demo:** https://ashutoshgit47.github.io/ASR-Configurator ,
+https://asrconfigurator.pages.dev
 
 ---
 
