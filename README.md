@@ -147,12 +147,6 @@ If this tool saved you time or helped secure your systems, consider supporting t
 
 ---
 
-## 📄 License
-
-MIT
-
----
-
 ## 👤 Author
 
 **Ashutosh Gautam** — Cybersecurity Enthusiast & Developer
