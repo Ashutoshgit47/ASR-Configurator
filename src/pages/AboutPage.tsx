@@ -1,4 +1,4 @@
-import { Github, UserCircle, BookOpen, Shield, Laptop, GraduationCap, AlertTriangle } from 'lucide-react';
+import { Github, UserCircle, BookOpen, Shield, Laptop, GraduationCap, AlertTriangle, Globe } from 'lucide-react';
 
 export default function AboutPage() {
 
@@ -95,18 +95,27 @@ export default function AboutPage() {
         {/* Developer */}
         <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
           <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-primary">
-            <BookOpen className="w-5 h-5" />
+            <UserCircle className="w-5 h-5" />
             Developer
           </h3>
           <div className="text-center">
             <p className="font-bold text-lg">Ashutosh Gautam</p>
-            <p className="text-muted-foreground mb-4">Cybersecurity Enthusiast & Developer</p>
+            <p className="text-muted-foreground mb-4">Cybersecurity Researcher & Developer</p>
             <div className="flex justify-center gap-3 flex-wrap">
+              <a
+                href="https://ashutosh47.pages.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground font-medium text-sm rounded-md hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                <Globe className="w-4 h-4" />
+                Website
+              </a>
               <a
                 href="https://github.com/Ashutoshgit47"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground font-medium text-sm rounded-md hover:bg-primary/90 transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground font-medium text-sm rounded-md hover:bg-secondary/80 border border-border transition-colors shadow-sm"
               >
                 <Github className="w-4 h-4" />
                 GitHub

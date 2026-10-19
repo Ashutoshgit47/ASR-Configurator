@@ -155,7 +155,7 @@ MIT
 
 ## 👤 Author
 
-**Ashutosh Gautam** — Cybersecurity Enthusiast & Developer
+**Ashutosh Gautam** — Cybersecurity Researcher & Developer
 
+- [Website](https://ashutosh47.pages.dev/)
 - [GitHub](https://github.com/Ashutoshgit47)
-- [Portfolio](https://ashutosh47.pages.dev)
