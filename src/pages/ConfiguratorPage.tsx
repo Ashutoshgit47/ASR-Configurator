@@ -493,7 +493,7 @@ export default function ConfiguratorPage() {
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-          <div className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-6 lg:p-8 bg-background min-h-0">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-5 md:p-6 lg:p-8 bg-background min-h-0 flex flex-col">
             <RuleDetailPanel
               selectedRule={selectedRule}
               currentRules={currentRules}

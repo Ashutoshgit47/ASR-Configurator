@@ -14,10 +14,10 @@ export function RuleDetailPanel({ selectedRule, currentRules, updateRuleState, o
 
   if (!selectedRule) {
     return (
-      <div className="w-full max-w-2xl mx-auto px-2 sm:px-0">
-        <div className="bg-card border border-border rounded-lg p-6 sm:p-8 text-center shadow-sm">
+      <div className="w-full max-w-2xl m-auto px-2 sm:px-0 py-4">
+        <div className="bg-card border border-border rounded-xl p-6 sm:p-8 text-center shadow-md">
           <Shield className="w-12 h-12 text-primary mx-auto mb-3 opacity-80" />
-          <h2 className="text-lg sm:text-xl font-bold mb-2">Select an ASR Rule</h2>
+          <h2 className="text-lg sm:text-xl font-bold mb-2 text-foreground">Select an ASR Rule</h2>
           <p className="text-sm sm:text-base text-muted-foreground mb-4">Choose a rule from the list to view its behavior, risk profile, and configure its deployment mode.</p>
           {onOpenSidebar && (
             <button
@@ -52,31 +52,30 @@ export function RuleDetailPanel({ selectedRule, currentRules, updateRuleState, o
       setCopiedGuid(true);
       setTimeout(() => setCopiedGuid(false), 2000);
     } catch {
-      // Fallback
       setCopiedGuid(true);
       setTimeout(() => setCopiedGuid(false), 2000);
     }
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-2 sm:px-0">
-      <div className="bg-card border border-border rounded-lg p-4 sm:p-6 shadow-sm">
+    <div className="w-full max-w-2xl m-auto px-2 sm:px-0 py-1 sm:py-2">
+      <div className="bg-card border border-border rounded-xl p-3.5 sm:p-6 shadow-md">
         {/* Title */}
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 leading-tight">
+        <h2 className="text-base sm:text-xl md:text-2xl font-bold mb-2 sm:mb-2.5 leading-tight tracking-tight text-foreground">
           {rule.name}
         </h2>
 
-        {/* Badges */}
-        <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-5">
-          <span className={`inline-flex items-center px-2.5 py-1 text-[11px] sm:text-xs font-bold uppercase rounded tracking-wider ${getRiskBadgeClass(rule.risk)}`}>
+        {/* Badges & Copy GUID */}
+        <div className="flex flex-wrap items-center gap-2 mb-2.5 sm:mb-3.5">
+          <span className={`inline-flex items-center px-2 py-0.5 text-[10px] sm:text-xs font-bold uppercase rounded-md tracking-wider ${getRiskBadgeClass(rule.risk)}`}>
             {rule.risk} RISK
           </span>
-          <span className="inline-flex items-center px-2.5 py-1 text-[11px] sm:text-xs font-semibold uppercase rounded bg-secondary text-secondary-foreground border border-border">
+          <span className="inline-flex items-center px-2 py-0.5 text-[10px] sm:text-xs font-semibold uppercase rounded-md bg-secondary text-secondary-foreground border border-border">
             {rule.category}
           </span>
           <button
             onClick={copyGuid}
-            className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-mono rounded bg-muted hover:bg-muted/80 text-muted-foreground transition-colors ml-auto min-h-[28px]"
+            className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] sm:text-[11px] font-mono rounded-md bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors ml-auto min-h-[26px] sm:min-h-[28px]"
             title="Click to copy rule GUID"
           >
             {copiedGuid ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
@@ -84,71 +83,82 @@ export function RuleDetailPanel({ selectedRule, currentRules, updateRuleState, o
           </button>
         </div>
 
-        {/* Description */}
-        <div className="space-y-1 mb-4">
-          <p className="text-sm sm:text-base leading-relaxed">
+        {/* Description & Scenario */}
+        <div className="space-y-1 sm:space-y-1.5 mb-2.5 sm:mb-3.5 text-xs sm:text-sm">
+          <p className="leading-snug sm:leading-relaxed">
             <span className="font-semibold text-foreground">Description: </span>
             <span className="text-muted-foreground">{rule.desc}</span>
           </p>
-        </div>
-
-        {/* Example */}
-        <div className="space-y-1 mb-4">
-          <p className="text-sm sm:text-base leading-relaxed">
+          <p className="leading-snug sm:leading-relaxed">
             <span className="font-semibold text-foreground">Attack Scenario: </span>
             <span className="text-muted-foreground">{rule.example}</span>
           </p>
         </div>
 
         {/* GUID Info Bar */}
-        <div className="mb-5 p-2 bg-muted/40 rounded border border-border/60 flex items-center justify-between text-xs">
-          <span className="text-muted-foreground font-mono text-[11px] sm:text-xs break-all">
+        <div className="mb-3 sm:mb-4 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-muted/40 rounded-lg border border-border/70 flex items-center justify-between text-xs font-mono">
+          <span className="text-muted-foreground text-[10px] sm:text-xs break-all">
             GUID: <span className="text-foreground select-all font-semibold">{rule.guid}</span>
           </span>
         </div>
 
         {/* Mode Selector */}
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+        <div className="space-y-1.5 sm:space-y-2 pt-2 border-t border-border/60">
+          <label className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
             Select Enforcement Mode
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
             <button
               onClick={() => updateRuleState(rule.guid, 1)}
-              className={`min-h-[44px] py-2.5 px-2 sm:px-4 font-semibold text-xs sm:text-sm border rounded-md transition-all flex items-center justify-center gap-1.5 ${currentState === 1
+              className={`min-h-[38px] sm:min-h-[42px] py-1.5 sm:py-2 px-2 sm:px-3 font-semibold text-xs sm:text-sm border rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 ${currentState === 1
                 ? 'border-destructive bg-destructive text-destructive-foreground shadow-sm ring-1 ring-destructive'
                 : 'border-input bg-background hover:bg-destructive/10 hover:text-destructive'
                 }`}
             >
-              <Shield className="w-4 h-4 flex-shrink-0" />
+              <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
               <span>Block</span>
             </button>
             <button
               onClick={() => updateRuleState(rule.guid, 2)}
-              className={`min-h-[44px] py-2.5 px-2 sm:px-4 font-semibold text-xs sm:text-sm border rounded-md transition-all flex items-center justify-center gap-1.5 ${currentState === 2
+              className={`min-h-[38px] sm:min-h-[42px] py-1.5 sm:py-2 px-2 sm:px-3 font-semibold text-xs sm:text-sm border rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 ${currentState === 2
                 ? 'border-amber-500 bg-amber-500 text-white shadow-sm ring-1 ring-amber-500'
                 : 'border-input bg-background hover:bg-amber-500/10 hover:text-amber-600 dark:hover:text-amber-400'
                 }`}
             >
-              <Eye className="w-4 h-4 flex-shrink-0" />
+              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
               <span>Audit</span>
             </button>
             <button
               onClick={() => updateRuleState(rule.guid, 0)}
-              className={`min-h-[44px] py-2.5 px-2 sm:px-4 font-semibold text-xs sm:text-sm border rounded-md transition-all flex items-center justify-center gap-1.5 ${currentState === 0
+              className={`min-h-[38px] sm:min-h-[42px] py-1.5 sm:py-2 px-2 sm:px-3 font-semibold text-xs sm:text-sm border rounded-lg transition-all flex items-center justify-center gap-1 sm:gap-1.5 ${currentState === 0
                 ? 'border-muted-foreground/60 bg-secondary text-foreground shadow-sm ring-1 ring-muted-foreground'
                 : 'border-input bg-background hover:bg-accent hover:text-accent-foreground'
                 }`}
             >
-              <Ban className="w-4 h-4 flex-shrink-0" />
+              <Ban className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
               <span>Disabled</span>
             </button>
           </div>
-          <p className="text-[11px] sm:text-xs text-muted-foreground mt-1">
-            {currentState === 1 && '⚠️ Block mode: Prevents matching behavior. Generates Windows Defender Event ID 1121.'}
-            {currentState === 2 && '🔍 Audit mode: Permits actions while logging them under Windows Defender Event ID 1122 for evaluation.'}
-            {currentState === 0 && '⚪ Disabled: Rule is completely inactive and not evaluated by Windows Defender.'}
-          </p>
+          <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground mt-1 sm:mt-1.5">
+            {currentState === 1 && (
+              <>
+                <span className="w-2 h-2 rounded-full bg-destructive flex-shrink-0" />
+                <span><strong className="text-foreground">Block mode:</strong> Prevents matching behavior. Generates Windows Defender Event ID 1121.</span>
+              </>
+            )}
+            {currentState === 2 && (
+              <>
+                <span className="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0" />
+                <span><strong className="text-foreground">Audit mode:</strong> Permits actions while logging under Windows Defender Event ID 1122.</span>
+              </>
+            )}
+            {currentState === 0 && (
+              <>
+                <span className="w-2 h-2 rounded-full bg-muted-foreground/60 flex-shrink-0" />
+                <span><strong className="text-foreground">Disabled:</strong> Rule is completely inactive and not evaluated by Windows Defender.</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
