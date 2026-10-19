@@ -1,0 +1,307 @@
+# Microsoft Defender Attack Surface Reduction (ASR) Rules — Comprehensive Technical Knowledge Bundle (llms-full.txt)
+> Authoritative, machine-readable security reference for Microsoft Defender ASR deployment, rule GUIDs, attack scenarios, and configuration syntax.
+> Canonical URL: https://asrconfigurator.pages.dev
+> Context URL: https://asrconfigurator.pages.dev/llms.txt
+> GitHub: https://github.com/Ashutoshgit47/ASR-Configurator
+> Author: Ashutosh Gautam
+> Last Updated: 2026-10-19
+
+---
+
+## Executive Summary
+Microsoft Defender Attack Surface Reduction (ASR) rules are host-based security controls built into modern Windows operating systems (Windows 10, Windows 11, Windows Server 2012 R2, 2016, 2019, 2022, 2025). They intercept high-risk software behaviors frequently leveraged by adversaries during initial access, execution, defense evasion, credential access, and lateral movement.
+
+Enabling Microsoft Defender ASR rules reduces endpoint attack surface by up to 80% against common malware strains, macro exploits, living-off-the-land binaries (LOLBins), and credential dumping utilities.
+
+ASR Configurator (https://asrconfigurator.pages.dev) is a free, client-side, privacy-first configuration tool providing interactive rule auditing, preset baseline generation, and instant code export for PowerShell, Group Policy (GPO), and Microsoft Intune.
+
+---
+
+## Action Values & Event Log Telemetry
+
+### Numeric Action States
+Every ASR rule accepts an integer action code:
+- `0` (Disabled): Rule is inactive and not evaluated by Windows Defender Antivirus.
+- `1` (Block): Matching behaviors are actively blocked in real time. Windows Defender records Event ID 1121 in the Defender Operational log.
+- `2` (Audit): Matching behaviors are permitted to execute normally while Windows Defender records Event ID 1122 in the Defender Operational log for testing and telemetry analysis.
+- `6` (Warn): User receives an interactive prompt informing them of suspicious activity with the option to bypass (supported on select rules in Windows 10/11 Enterprise/Pro).
+
+### Event Log Path
+Windows Event Viewer location for ASR audit and block events:
+`Applications and Services Logs > Microsoft > Windows > Windows Defender > Operational`
+
+Key Event IDs:
+- **Event ID 1121**: Microsoft Defender Exploit Guard has blocked an operation (ASR Block mode).
+- **Event ID 1122**: Microsoft Defender Exploit Guard has audited an operation (ASR Audit mode).
+- **Event ID 1123**: Blocked operation with user notification.
+- **Event ID 1124**: Audited operation with user notification.
+
+---
+
+## Complete Catalog of 19 Official Microsoft Defender ASR Rules
+
+### 1. Block abuse of exploited vulnerable signed drivers
+- **GUID**: `56A863A9-875E-4185-98A7-B882C64B5CE5`
+- **Category**: System | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10 (1903+), Windows Server 2022, Windows Server 2019
+- **Attack Scenario**: Adversaries bring their own vulnerable, legitimately signed drivers (BYOVD attack, e.g., Process Hacker, Capcom, RTCore64) to disable EDR agents or escalate privileges to Ring 0 kernel level.
+- **MITRE ATT&CK Mapping**: T1068 (Exploitation for Privilege Escalation), T1562.001 (Impair Defenses: Disable or Modify Tools).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 56A863A9-875E-4185-98A7-B882C64B5CE5 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 2. Block Adobe Reader from creating child processes
+- **GUID**: `7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C`
+- **Category**: Application | **Risk Profile**: MEDIUM
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Malicious PDF documents containing embedded exploits spawn cmd.exe, powershell.exe, or wscript.exe to download and execute secondary malware payloads upon opening.
+- **MITRE ATT&CK Mapping**: T1204.002 (User Execution: Malicious File), T1059 (Command and Scripting Interpreter).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C -AttackSurfaceReductionRules_Actions Enabled`
+
+### 3. Block all Office applications from creating child processes
+- **GUID**: `D4F940AB-401B-4EFC-AADC-AD5F3C50688A`
+- **Category**: Office | **Risk Profile**: HIGH
+- **Default Recommendation**: Audit first (Value: 2), then Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Malicious Word, Excel, or PowerPoint files with VBA macros launch powershell.exe, mshta.exe, or certutil.exe to execute staging commands.
+- **MITRE ATT&CK Mapping**: T1059.005 (Visual Basic), T1204.002 (Malicious File).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids D4F940AB-401B-4EFC-AADC-AD5F3C50688A -AttackSurfaceReductionRules_Actions Enabled`
+
+### 4. Block credential stealing from LSASS
+- **GUID**: `9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2`
+- **Category**: Credential Access | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Post-exploitation tools (e.g. Mimikatz, Procdump, Taskmgr memory dump) attempt to open handles to `lsass.exe` with `PROCESS_VM_READ` or `PROCESS_QUERY_INFORMATION` rights to dump plaintext passwords, Kerberos tickets, and NTLM hashes.
+- **MITRE ATT&CK Mapping**: T1003.001 (OS Credential Dumping: LSASS Memory).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 5. Block executable content from email client and webmail
+- **GUID**: `BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550`
+- **Category**: Email | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Phishing emails with attached executables, scripts (.vbs, .js, .ps1), or compressed archives containing executable files that users run directly from Outlook or webmail browsers.
+- **MITRE ATT&CK Mapping**: T1566.001 (Phishing: Spearphishing Attachment).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 6. Block executable files unless they meet prevalence, age, or trusted list
+- **GUID**: `01443614-CD74-433A-B99E-2ECDC07BFC25`
+- **Category**: Application | **Risk Profile**: CRITICAL
+- **Default Recommendation**: Audit first (Value: 2); requires cloud connectivity.
+- **Supported Platforms**: Windows 11, Windows 10
+- **Attack Scenario**: Zero-day executables and bespoke polymorphic malware compile or drop on endpoints without existing reputation in Microsoft Cloud protection.
+- **MITRE ATT&CK Mapping**: T1204.002 (User Execution: Malicious File), T1027 (Obfuscated Files or Information).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 01443614-CD74-433A-B99E-2ECDC07BFC25 -AttackSurfaceReductionRules_Actions AuditMode`
+
+### 7. Block execution of potentially obfuscated scripts
+- **GUID**: `5BEB7EFE-FD9A-4556-801D-275E5FFC04CC`
+- **Category**: Script | **Risk Profile**: MEDIUM
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Scripts encoded with Base64, string manipulation, environment variable substitution, or XOR masking to evade basic antivirus detection before launching malicious code via AMSI.
+- **MITRE ATT&CK Mapping**: T1027 (Obfuscated Files or Information), T1059 (Command and Scripting Interpreter).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 5BEB7EFE-FD9A-4556-801D-275E5FFC04CC -AttackSurfaceReductionRules_Actions Enabled`
+
+### 8. Block JavaScript/VBScript from launching downloaded executables
+- **GUID**: `D3E037E1-3EB8-44C8-A917-57927947596D`
+- **Category**: Web / Script | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Drive-by download attacks where internet scripts invoke Windows Script Host (wscript.exe / cscript.exe) to fetch a malicious payload and spawn a child process.
+- **MITRE ATT&CK Mapping**: T1204.001 (User Execution: Malicious Link), T1105 (Ingress Tool Transfer).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids D3E037E1-3EB8-44C8-A917-57927947596D -AttackSurfaceReductionRules_Actions Enabled`
+
+### 9. Block Office applications from creating executable content
+- **GUID**: `3B576869-A4EC-4529-8536-B80A7769E899`
+- **Category**: Office | **Risk Profile**: MEDIUM
+- **Default Recommendation**: Audit first (Value: 2), then Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Malicious Office documents writing .exe, .dll, or .scr files directly to `%TEMP%` or `%APPDATA%` prior to execution.
+- **MITRE ATT&CK Mapping**: T1105 (Ingress Tool Transfer), T1059.005 (Visual Basic).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 3B576869-A4EC-4529-8536-B80A7769E899 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 10. Block Office apps from injecting code into other processes
+- **GUID**: `75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84`
+- **Category**: Office | **Risk Profile**: MEDIUM
+- **Default Recommendation**: Audit first (Value: 2), then Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Office macros using API calls like `VirtualAllocEx`, `WriteProcessMemory`, and `CreateRemoteThread` to inject shellcode into explorer.exe or svchost.exe.
+- **MITRE ATT&CK Mapping**: T1055 (Process Injection).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 11. Block Office communication apps from creating child processes
+- **GUID**: `26190899-1602-49E8-8B27-EB1D0A1CE869`
+- **Category**: Email / Office | **Risk Profile**: MEDIUM
+- **Default Recommendation**: Audit first (Value: 2), then Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Microsoft Outlook spawning child processes from previewed attachments or calendar invites containing malicious links or handlers.
+- **MITRE ATT&CK Mapping**: T1204.002 (Malicious File), T1059 (Command and Scripting Interpreter).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 26190899-1602-49E8-8B27-EB1D0A1CE869 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 12. Block persistence through WMI event subscription
+- **GUID**: `E6DB77E5-3DF2-4CF1-B95A-636979351E5B`
+- **Category**: System / Persistence | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Malware registering `__EventFilter`, `__EventConsumer`, and `__FilterToConsumerBinding` classes in WMI to achieve fileless persistence surviving reboots.
+- **MITRE ATT&CK Mapping**: T1546.003 (Event Triggered Execution: Windows Management Instrumentation Event Subscription).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids E6DB77E5-3DF2-4CF1-B95A-636979351E5B -AttackSurfaceReductionRules_Actions Enabled`
+
+### 13. Block process creations from PSExec and WMI commands
+- **GUID**: `D1E49AAC-8F56-4280-B9BA-993A6D77406C`
+- **Category**: Remote / Lateral Movement | **Risk Profile**: MEDIUM
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Lateral movement across corporate domains using Sysinternals PSExec, `wmic process call create`, or WinRM to execute commands on remote target workstations.
+- **MITRE ATT&CK Mapping**: T1021.002 (SMB/Windows Admin Shares), T1047 (Windows Management Instrumentation).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids D1E49AAC-8F56-4280-B9BA-993A6D77406C -AttackSurfaceReductionRules_Actions Enabled`
+
+### 14. Block untrusted and unsigned processes that run from USB
+- **GUID**: `B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4`
+- **Category**: USB / Physical | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Malicious USB flash drives (e.g. Raspberry Pi Pico, Rubber Ducky, or dropped infected thumb drives) attempting to execute unsigned worms or autorun binaries.
+- **MITRE ATT&CK Mapping**: T1091 (Replication Through Removable Media), T1204.002 (Malicious File).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 15. Block Win32 API calls from Office macros
+- **GUID**: `92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B`
+- **Category**: Office | **Risk Profile**: HIGH
+- **Default Recommendation**: Audit first (Value: 2), then Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: VBA macros in Word or Excel directly declaring and invoking Win32 Windows API functions (e.g., `VirtualAlloc`, `RtlMoveMemory`, `URLDownloadToFileA`) to bypass managed code protections.
+- **MITRE ATT&CK Mapping**: T1059.005 (Visual Basic), T1106 (Native API).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B -AttackSurfaceReductionRules_Actions Enabled`
+
+### 16. Use advanced protection against ransomware
+- **GUID**: `C1DB55AB-C21A-4637-BB3F-A12568109D35`
+- **Category**: Ransomware | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10, Windows Server 2016+
+- **Attack Scenario**: Ransomware processes attempting bulk rapid file modifications, extension renaming, or deleting shadow copies via vssadmin.
+- **MITRE ATT&CK Mapping**: T1486 (Data Encrypted for Impact), T1490 (Inhibit System Recovery).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids C1DB55AB-C21A-4637-BB3F-A12568109D35 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 17. Block rebooting machine in Safe Mode
+- **GUID**: `33DDEDF1-C6E0-47CB-833E-DE6133960387`
+- **Category**: System | **Risk Profile**: LOW
+- **Default Recommendation**: Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10 (1903+), Windows Server 2022, Windows Server 2019
+- **Attack Scenario**: Threat actors forcing endpoints into Windows Safe Mode (via `bcdedit /set {default} safeboot minimal`) where third-party antivirus services and EDR agents fail to load, facilitating unmonitored ransomware deployment.
+- **MITRE ATT&CK Mapping**: T1562.001 (Impair Defenses: Disable or Modify Tools).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids 33DDEDF1-C6E0-47CB-833E-DE6133960387 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 18. Block Webshell creation for Servers
+- **GUID**: `A8F5898E-1DC8-49A9-9878-85004B8A61E6`
+- **Category**: Server | **Risk Profile**: HIGH
+- **Default Recommendation**: Audit first (Value: 2), then Block (Value: 1)
+- **Supported Platforms**: Windows Server 2019, Windows Server 2022, Windows Server 2025 (Exchange Server role)
+- **Attack Scenario**: Attackers exploiting web server vulnerabilities (e.g. ProxyLogon, ProxyShell) to drop ASPX, PHP, or JSP web shells in IIS wwwroot directories for permanent backdoors.
+- **MITRE ATT&CK Mapping**: T1505.003 (Server Software Component: Web Shell).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids A8F5898E-1DC8-49A9-9878-85004B8A61E6 -AttackSurfaceReductionRules_Actions Enabled`
+
+### 19. Block use of copied or impersonated system tools
+- **GUID**: `C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB`
+- **Category**: System | **Risk Profile**: MEDIUM
+- **Default Recommendation**: Audit first (Value: 2), then Block (Value: 1)
+- **Supported Platforms**: Windows 11, Windows 10 (1709+), Windows Server 2016+
+- **Attack Scenario**: Adversaries copying legitimate system tools (e.g. cmd.exe, powershell.exe, certutil.exe) from %windir%\System32 or %windir%\SysWOW64 to writable staging directories (C:\Temp, %AppData%) or renaming them to evade path-based detection rules.
+- **MITRE ATT&CK Mapping**: T1036.003 (Masquerading: Rename System Utilities), T1036.005 (Masquerading: Match Legitimate Name or Location).
+- **PowerShell Syntax**:
+  `Set-MpPreference -AttackSurfaceReductionRules_Ids C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB -AttackSurfaceReductionRules_Actions Enabled`
+
+---
+
+## Deployment Baselines & Presets
+
+ASR Configurator categorizes policies into five established baselines:
+
+1. **Disabled**:
+   - Resets all 19 rules to state `0`. Used for disaster recovery and performance benchmarking.
+
+2. **Basic Protection**:
+   - Evaluates 7 core rules in Audit mode (`2`): Adobe Reader, Email clients, JS/VBScript launch, WMI persistence, USB processes, Ransomware protection, Safe Mode reboot.
+   - Zero business impact; generates baseline telemetry.
+
+3. **Balanced (Recommended for Enterprise Workstations)**:
+   - High-confidence rules set to Block (`1`): Driver abuse, Adobe child processes, LSASS credential theft, Email executables, JS/VBScript downloads, WMI persistence, PSExec/WMI remote execution, USB unsigned executables, Ransomware protection, Safe Mode reboot.
+   - Highly business-sensitive Office rules and Server webshell creation set to Audit (`2`).
+
+4. **Strict Protection (High-Security Environments & Air-Gapped Systems)**:
+   - Sets 14 rules to Block (`1`) and 4 rules to Audit (`2`) (Untrusted executable prevalence, Win32 API from macros, and Server webshell creation).
+
+5. **Developer-Friendly**:
+   - Keeps code compilation, debugger attachment, and local scripting workflows unblocked while auditing background risk factors.
+
+---
+
+## Deployment Methodologies
+
+### 1. PowerShell Deployment
+Run with elevated Administrator privileges:
+```powershell
+Set-MpPreference -AttackSurfaceReductionRules_Ids <GUID_1>,<GUID_2> -AttackSurfaceReductionRules_Actions <Action_1>,<Action_2>
+```
+To verify active rules:
+```powershell
+Get-MpPreference | Select-Object -ExpandProperty AttackSurfaceReductionRules_Ids
+Get-MpPreference | Select-Object -ExpandProperty AttackSurfaceReductionRules_Actions
+```
+
+### 2. Microsoft Intune Endpoint Security
+- Navigate to: **Microsoft Intune admin center** > **Endpoint security** > **Attack surface reduction** > **Create Policy**.
+- Platform: Windows 10, Windows 11, and Windows Server.
+- Profile: **Attack Surface Reduction rules**.
+- Set desired state (Off, Audit, Block, Warn) per rule.
+- Alternatively, deploy via custom OMA-URI:
+  - OMA-URI: `./Vendor/MSFT/Defender/Configuration/AttackSurfaceReductionRules`
+  - Data type: String
+  - Value format: `<GUID>=<State>|<GUID>=<State>`
+
+### 3. Group Policy (GPO)
+- Open `gpedit.msc` or Group Policy Management Console.
+- Navigate to: `Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus > Microsoft Defender Exploit Guard > Attack Surface Reduction`.
+- Policy: **Configure Attack Surface Reduction rules**.
+- Choose **Enabled** and click **Show...**:
+  - Value name: Rule GUID
+  - Value: `1` (Block), `2` (Audit), `0` (Disable).
+
+---
+
+## Exclusion Management
+To exclude specific line-of-business applications from ASR rule enforcement:
+```powershell
+Add-MpPreference -AttackSurfaceReductionOnlyExclusions "C:\Program Files\MyEnterpriseApp\app.exe"
+```
+Or exclude entire directory paths:
+```powershell
+Add-MpPreference -AttackSurfaceReductionOnlyExclusions "C:\CorporateTools\"
+```
+
+---
+
+## References & Official Sources
+1. Microsoft Learn: *Attack surface reduction rules reference* (https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference)
+2. Microsoft Learn: *Enable attack surface reduction rules* (https://learn.microsoft.com/en-us/defender-endpoint/enable-attack-surface-reduction)
+3. MITRE ATT&CK Matrix for Enterprise (https://attack.mitre.org)
+4. Princeton GEO Study (Aggarwal et al., 2024, KDD): Optimization principles for AI retrieval and citations.

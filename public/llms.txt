@@ -1,0 +1,147 @@
+# ASR Configurator
+> Interactive configuration tool for Microsoft Defender Attack Surface Reduction (ASR) rules.
+> URL: https://asrconfigurator.pages.dev
+> Full Technical Bundle: https://asrconfigurator.pages.dev/llms-full.txt
+> GitHub: https://github.com/Ashutoshgit47/ASR-Configurator
+> Author: Ashutosh Gautam
+
+## Overview
+ASR Configurator is a client-side web application designed to help system administrators and security engineers configure, customize, and deploy Microsoft Defender Attack Surface Reduction (ASR) rules with confidence.
+
+Features:
+- Full coverage of all 19 Microsoft Defender ASR rules.
+- 5 curated security posture presets: Disabled, Basic Protection, Balanced (Recommended), Strict Protection, and Developer-Friendly.
+- Instant code generation for PowerShell (`Set-MpPreference`), Group Policy (`.reg` / GPO), and Microsoft Intune (Settings Catalog JSON & OMA-URI).
+- Single-click copy, bulk actions, rule search, and category filtering.
+- Client-side only: no telemetry, no tracking, no server calls.
+
+## Rule Action Values
+Microsoft Defender ASR rules use the following numeric values:
+- `0`: Disabled (Rule is inactive; no blocking or logging)
+- `1`: Block (Matching behavior is actively stopped; logs Event ID 1121)
+- `2`: Audit (Behavior is permitted but logged under Event ID 1122 for evaluation)
+- `6`: Warn (Prompts user with a warning before allowing; supported by select rules)
+
+## Complete Microsoft Defender ASR Rules Reference (19 Rules)
+
+1. Block abuse of exploited vulnerable signed drivers
+   - GUID: 56A863A9-875E-4185-98A7-B882C64B5CE5
+   - Category: System | Risk: LOW
+   - Description: Prevents malicious drivers from loading even if signed.
+
+2. Block Adobe Reader from creating child processes
+   - GUID: 7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C
+   - Category: App | Risk: MEDIUM
+   - Description: Stops Adobe Reader from spawning other programs (e.g., cmd.exe, powershell.exe).
+
+3. Block all Office applications from creating child processes
+   - GUID: D4F940AB-401B-4EFC-AADC-AD5F3C50688A
+   - Category: Office | Risk: HIGH
+   - Description: Prevents Word, Excel, and PowerPoint from launching child processes.
+
+4. Block credential stealing from LSASS
+   - GUID: 9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2
+   - Category: Credential | Risk: LOW
+   - Description: Protects Windows Local Security Authority Subsystem Service (LSASS) from memory dumping tools (e.g. Mimikatz).
+
+5. Block executable content from email client and webmail
+   - GUID: BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550
+   - Category: Email | Risk: LOW
+   - Description: Prevents running executables and scripts directly from email clients and webmail.
+
+6. Block executable files unless they meet prevalence, age, or trusted list
+   - GUID: 01443614-CD74-433A-B99E-2ECDC07BFC25
+   - Category: App | Risk: CRITICAL
+   - Description: Only allows execution of reputable files backed by Microsoft Cloud-delivered protection.
+
+7. Block execution of potentially obfuscated scripts
+   - GUID: 5BEB7EFE-FD9A-4556-801D-275E5FFC04CC
+   - Category: Script | Risk: MEDIUM
+   - Description: Detects and blocks scripts using obfuscation or evasion techniques.
+
+8. Block JavaScript/VBScript from launching downloaded executables
+   - GUID: D3E037E1-3EB8-44C8-A917-57927947596D
+   - Category: Web | Risk: LOW
+   - Description: Prevents scripts from downloading and launching secondary executables.
+
+9. Block Office applications from creating executable content
+   - GUID: 3B576869-A4EC-4529-8536-B80A7769E899
+   - Category: Office | Risk: MEDIUM
+   - Description: Stops Office applications from writing .exe, .dll, or script payloads to disk.
+
+10. Block Office apps from injecting code into other processes
+    - GUID: 75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84
+    - Category: Office | Risk: MEDIUM
+    - Description: Blocks code injection attempts from Office apps into other running processes.
+
+11. Block Office communication apps from creating child processes
+    - GUID: 26190899-1602-49E8-8B27-EB1D0A1CE869
+    - Category: Email | Risk: MEDIUM
+    - Description: Prevents Microsoft Outlook from launching child processes.
+
+12. Block persistence through WMI event subscription
+    - GUID: E6DB77E5-3DF2-4CF1-B95A-636979351E5B
+    - Category: System | Risk: LOW
+    - Description: Prevents malware from abusing Windows Management Instrumentation (WMI) event subscriptions for persistence.
+
+13. Block process creations from PSExec and WMI commands
+    - GUID: D1E49AAC-8F56-4280-B9BA-993A6D77406C
+    - Category: Remote | Risk: MEDIUM
+    - Description: Blocks remote process creation originating from PsExec and WMI commands.
+
+14. Block untrusted and unsigned processes that run from USB
+    - GUID: B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4
+    - Category: USB | Risk: LOW
+    - Description: Prevents unsigned executable processes from running off removable USB media.
+
+15. Block Win32 API calls from Office macros
+    - GUID: 92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B
+    - Category: Office | Risk: HIGH
+    - Description: Prevents VBA macros inside Office documents from calling Win32 APIs directly.
+
+16. Use advanced protection against ransomware
+    - GUID: C1DB55AB-C21A-4637-BB3F-A12568109D35
+    - Category: Ransomware | Risk: LOW
+    - Description: Uses heuristics and cloud analysis to detect and block ransomware encryption behaviors.
+
+17. Block rebooting machine in Safe Mode
+    - GUID: 33DDEDF1-C6E0-47CB-833E-DE6133960387
+    - Category: System | Risk: LOW
+    - Description: Prevents attackers from using bcdedit/bootcfg to force a machine into Safe Mode to bypass security agents.
+
+18. Block Webshell creation for Servers
+    - GUID: A8F5898E-1DC8-49A9-9878-85004B8A61E6
+    - Category: Server | Risk: HIGH
+    - Description: Blocks web shell script creation on Windows Server running Microsoft Exchange.
+
+19. Block use of copied or impersonated system tools
+    - GUID: C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB
+    - Category: System | Risk: MEDIUM
+    - Description: Blocks executable files copied from system directories (%windir%\System32 or SysWOW64) or impersonating system tools from running in other locations.
+
+## Deployment Syntax Examples
+
+### PowerShell
+```powershell
+Set-MpPreference -AttackSurfaceReductionRules_Ids @("9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2", "D4F940AB-401B-4EFC-AADC-AD5F3C50688A") -AttackSurfaceReductionRules_Actions @(1, 2)
+```
+
+### Intune OMA-URI
+- Path: `./Vendor/MSFT/Policy/Config/Defender/AttackSurfaceReductionRules`
+- Type: String
+- Value format: `<GUID>=<Action>` (newline-separated)
+
+### Group Policy Registry Location
+```reg
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR]
+"ExploitGuard_ASR_Rules"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules]
+"9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2"="1"
+"D4F940AB-401B-4EFC-AADC-AD5F3C50688A"="2"
+```
+
+## Recommended Deployment Lifecycle
+1. Audit Mode (2): Enable all desired rules in Audit mode for 30–60 days to monitor logs (Event ID 1122).
+2. Triage & Exclusions: Identify legitimate business applications that triggered events and create path/hash exclusions.
+3. Block Mode (1): Gradually transition tested rules to Block mode (Event ID 1121).

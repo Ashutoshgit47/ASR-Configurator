@@ -2,7 +2,7 @@
 
 A modern, interactive web tool to help you understand, configure, and deploy Microsoft Defender Attack Surface Reduction (ASR) rules with confidence.
 
-🌐 **Live Demo:**  https://asrconfigurator.pages.dev
+🌐 **Live Demo:** [asrconfigurator.pages.dev](https://asrconfigurator.pages.dev)
 
 ---
 
@@ -144,6 +144,12 @@ If this tool saved you time or helped secure your systems, consider supporting t
 - [ASR Rules Reference](https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference)
 - [Enable ASR Rules](https://learn.microsoft.com/en-us/defender-endpoint/enable-attack-surface-reduction)
 - [ASR Deployment Guide](https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-deployment)
+
+---
+
+## 📄 License
+
+MIT
 
 ---
 

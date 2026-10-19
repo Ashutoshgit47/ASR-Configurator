@@ -19,14 +19,16 @@ export const ASR_RULES: ASRRule[] = [
   { guid: "5BEB7EFE-FD9A-4556-801D-275E5FFC04CC", name: "Block execution of potentially obfuscated scripts", category: "Script", risk: "MEDIUM", desc: "Detects and blocks scripts using obfuscation.", example: "Prevents disguised malware scripts." },
   { guid: "D3E037E1-3EB8-44C8-A917-57927947596D", name: "Block JavaScript/VBScript from launching downloaded executables", category: "Web", risk: "LOW", desc: "Prevents scripts from downloading and running programs.", example: "Blocks drive-by downloads." },
   { guid: "3B576869-A4EC-4529-8536-B80A7769E899", name: "Block Office applications from creating executable content", category: "Office", risk: "MEDIUM", desc: "Stops Office from creating .exe, .dll, or script files.", example: "Prevents malware creation via documents." },
-  { guid: "75668C1F-73B5-4CF0-BB93-3ECF5F35C5F4", name: "Block Office apps from injecting code into other processes", category: "Office", risk: "MEDIUM", desc: "Prevents Office from modifying other running programs.", example: "Blocks process injection attacks." },
+  { guid: "75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84", name: "Block Office apps from injecting code into other processes", category: "Office", risk: "MEDIUM", desc: "Prevents Office from modifying other running programs.", example: "Blocks process injection attacks." },
   { guid: "26190899-1602-49E8-8B27-EB1D0A1CE869", name: "Block Office communication apps from creating child processes", category: "Email", risk: "MEDIUM", desc: "Prevents Outlook from launching other programs.", example: "Prevents email-triggered malware." },
   { guid: "E6DB77E5-3DF2-4CF1-B95A-636979351E5B", name: "Block persistence through WMI event subscription", category: "System", risk: "LOW", desc: "Prevents malware from using WMI for persistence.", example: "Prevents long-term malware establishment." },
   { guid: "D1E49AAC-8F56-4280-B9BA-993A6D77406C", name: "Block process creations from PSExec and WMI commands", category: "Remote", risk: "MEDIUM", desc: "Blocks remote process execution tools.", example: "Prevents lateral movement in network." },
-  { guid: "B2B3F03D-6A65-4F7B-A9C7-1C7EF76FC7B0", name: "Block untrusted and unsigned processes from USB", category: "USB", risk: "LOW", desc: "Prevents unsigned programs from running off USB.", example: "Prevents USB-based malware spread." },
+  { guid: "B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4", name: "Block untrusted and unsigned processes that run from USB", category: "USB", risk: "LOW", desc: "Prevents unsigned programs from running off USB.", example: "Prevents USB-based malware spread." },
   { guid: "92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B", name: "Block Win32 API calls from Office macros", category: "Office", risk: "HIGH", desc: "Prevents Office macros from accessing Windows APIs.", example: "Blocks sophisticated macro-based attacks." },
   { guid: "C1DB55AB-C21A-4637-BB3F-A12568109D35", name: "Use advanced protection against ransomware", category: "Ransomware", risk: "LOW", desc: "Monitors and blocks ransomware-like behavior.", example: "Ransomware prevention." },
-  { guid: "33DDEDF1-C6E0-47CB-833E-DE1B90F88F65", name: "Block rebooting machine in Safe Mode", category: "System", risk: "LOW", desc: "Prevents attackers from forcing Safe Mode boot.", example: "Prevents Safe Mode bypass techniques." }
+  { guid: "33DDEDF1-C6E0-47CB-833E-DE6133960387", name: "Block rebooting machine in Safe Mode", category: "System", risk: "LOW", desc: "Prevents attackers from forcing Safe Mode boot.", example: "Prevents Safe Mode bypass techniques." },
+  { guid: "A8F5898E-1DC8-49A9-9878-85004B8A61E6", name: "Block Webshell creation for Servers", category: "Server", risk: "HIGH", desc: "Blocks web shell script creation on Windows Server (Exchange role).", example: "Prevents persistence and remote command execution via compromised web servers." },
+  { guid: "C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB", name: "Block use of copied or impersonated system tools", category: "System", risk: "MEDIUM", desc: "Prevents execution of copied or impersonated system tools from non-standard paths.", example: "Prevents attackers copying cmd.exe or powershell.exe to temp folder to bypass detection." }
 ];
 
 export type PresetName = 'disabled' | 'basic' | 'balanced' | 'strict' | 'developer';
@@ -38,9 +40,9 @@ export const PRESETS: Record<PresetName, Record<string, RuleState>> = {
     "BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550": 2,
     "D3E037E1-3EB8-44C8-A917-57927947596D": 2,
     "E6DB77E5-3DF2-4CF1-B95A-636979351E5B": 2,
-    "B2B3F03D-6A65-4F7B-A9C7-1C7EF76FC7B0": 2,
+    "B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4": 2,
     "C1DB55AB-C21A-4637-BB3F-A12568109D35": 2,
-    "33DDEDF1-C6E0-47CB-833E-DE1B90F88F65": 2
+    "33DDEDF1-C6E0-47CB-833E-DE6133960387": 2
   },
   balanced: {
     "56A863A9-875E-4185-98A7-B882C64B5CE5": 1,
@@ -50,12 +52,15 @@ export const PRESETS: Record<PresetName, Record<string, RuleState>> = {
     "BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550": 1,
     "D3E037E1-3EB8-44C8-A917-57927947596D": 1,
     "3B576869-A4EC-4529-8536-B80A7769E899": 2,
+    "75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84": 2,
     "26190899-1602-49E8-8B27-EB1D0A1CE869": 2,
     "E6DB77E5-3DF2-4CF1-B95A-636979351E5B": 1,
     "D1E49AAC-8F56-4280-B9BA-993A6D77406C": 1,
-    "B2B3F03D-6A65-4F7B-A9C7-1C7EF76FC7B0": 1,
+    "B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4": 1,
     "C1DB55AB-C21A-4637-BB3F-A12568109D35": 1,
-    "33DDEDF1-C6E0-47CB-833E-DE1B90F88F65": 1
+    "33DDEDF1-C6E0-47CB-833E-DE6133960387": 1,
+    "A8F5898E-1DC8-49A9-9878-85004B8A61E6": 2,
+    "C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB": 2
   },
   strict: {
     "56A863A9-875E-4185-98A7-B882C64B5CE5": 1,
@@ -67,21 +72,23 @@ export const PRESETS: Record<PresetName, Record<string, RuleState>> = {
     "5BEB7EFE-FD9A-4556-801D-275E5FFC04CC": 1,
     "D3E037E1-3EB8-44C8-A917-57927947596D": 1,
     "3B576869-A4EC-4529-8536-B80A7769E899": 1,
-    "75668C1F-73B5-4CF0-BB93-3ECF5F35C5F4": 1,
+    "75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84": 1,
     "26190899-1602-49E8-8B27-EB1D0A1CE869": 1,
     "E6DB77E5-3DF2-4CF1-B95A-636979351E5B": 1,
     "D1E49AAC-8F56-4280-B9BA-993A6D77406C": 1,
-    "B2B3F03D-6A65-4F7B-A9C7-1C7EF76FC7B0": 1,
+    "B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4": 1,
     "92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B": 2,
     "C1DB55AB-C21A-4637-BB3F-A12568109D35": 1,
-    "33DDEDF1-C6E0-47CB-833E-DE1B90F88F65": 1
+    "33DDEDF1-C6E0-47CB-833E-DE6133960387": 1,
+    "A8F5898E-1DC8-49A9-9878-85004B8A61E6": 1,
+    "C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB": 1
   },
   developer: {
     "7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C": 2,
     "BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550": 2,
     "D3E037E1-3EB8-44C8-A917-57927947596D": 2,
     "E6DB77E5-3DF2-4CF1-B95A-636979351E5B": 2,
-    "B2B3F03D-6A65-4F7B-A9C7-1C7EF76FC7B0": 2,
+    "B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4": 2,
     "C1DB55AB-C21A-4637-BB3F-A12568109D35": 2
   }
 };

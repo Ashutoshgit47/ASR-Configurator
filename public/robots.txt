@@ -1,16 +1,55 @@
+# Search Crawlers
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
+# AI Search Discovery & Retrieval Crawlers
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# AI Model Training & Grounding
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Social & Embed Crawlers
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
+# Default
 User-agent: *
 Allow: /
+
+# LLM Discovery & Machine-Readable Context
+# Short Reference: https://asrconfigurator.pages.dev/llms.txt
+# Full Technical Bundle: https://asrconfigurator.pages.dev/llms-full.txt
 
 Sitemap: https://asrconfigurator.pages.dev/sitemap.xml

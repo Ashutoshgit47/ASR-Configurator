@@ -35,13 +35,13 @@ export default function HowToUsePage() {
           </p>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li><strong className="text-destructive">Block (value: 1):</strong> The action is actively stopped. Provides maximum protection for that rule.</li>
-            <li><strong className="text-chart-4">Audit (value: 2):</strong> Monitoring only. The action is allowed but logged for review. Use this to test rules before enforcing.</li>
+            <li><strong className="text-amber-500">Audit (value: 2):</strong> Monitoring only. The action is allowed but logged for review. Use this to test rules before enforcing.</li>
             <li><strong className="text-muted-foreground">Disabled (value: 0):</strong> The rule is completely turned off. No blocking or logging occurs.</li>
           </ul>
           <div className="mt-4 p-3 bg-primary/5 border border-primary/20 rounded-md">
             <p className="text-xs text-muted-foreground">
-              <strong className="text-foreground">💡 Bulk Actions:</strong> Use the <strong className="text-foreground">Block All</strong>,{' '}
-              <strong className="text-foreground">Audit All</strong>, or <strong className="text-foreground">Disable</strong> buttons
+              <strong className="text-foreground">💡 Bulk Actions:</strong> Use the <strong className="text-foreground">Block</strong>,{' '}
+              <strong className="text-foreground">Audit</strong>, or <strong className="text-foreground">Off</strong> buttons
               to change all checked rules at once. The preset dropdown will show <strong className="text-foreground">"Custom"</strong> when
               your configuration doesn't match any predefined preset.
             </p>
@@ -82,8 +82,8 @@ export default function HowToUsePage() {
                   <td className="p-3 text-muted-foreground">Action is blocked + Event ID 1121 logged</td>
                 </tr>
                 <tr className="border-b border-border">
-                  <td className="p-3"><code className="px-2 py-0.5 bg-chart-4/20 rounded text-chart-4 font-mono font-bold">2</code></td>
-                  <td className="p-3 font-medium text-chart-4">Audit</td>
+                  <td className="p-3"><code className="px-2 py-0.5 bg-amber-500/20 rounded text-amber-500 font-mono font-bold">2</code></td>
+                  <td className="p-3 font-medium text-amber-500">Audit</td>
                   <td className="p-3 text-muted-foreground"><code className="text-xs bg-muted px-1 rounded">AuditMode</code></td>
                   <td className="p-3 text-muted-foreground">Action is allowed + Event ID 1122 logged</td>
                 </tr>
@@ -239,7 +239,7 @@ mdmdiagnosticstool.exe -area DeviceEnrollment;DeviceProvisioning;Autopilot -cab 
               <strong className="text-foreground">📋 Event IDs (all methods):</strong>{' '}
               <strong className="text-foreground">1121</strong> = ASR rule fired in Block mode,{' '}
               <strong className="text-foreground">1122</strong> = ASR rule fired in Audit mode. Check in{' '}
-              <code className="px-1 py-0.5 bg-muted rounded text-xs">Event Viewer → Applications and Services → Microsoft → Windows → Windows Defender → Operational</code>
+              <code className="px-1 py-0.5 bg-muted rounded text-xs">Event Viewer → Applications and Services Logs → Microsoft → Windows → Windows Defender → Operational</code>
             </p>
           </div>
         </div>

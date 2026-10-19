@@ -21,6 +21,7 @@
 
   <!-- Open Graph / Social -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://asrconfigurator.pages.dev/" />
   <meta property="og:title" content="ASR Configurator - Attack Surface Reduction Rules Configuration Tool" />
   <meta property="og:description"
     content="Configure Microsoft Defender Attack Surface Reduction rules with an easy-to-use visual interface." />
@@ -30,13 +31,173 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ASR Configurator" />
   <meta name="twitter:description" content="Configure Microsoft Defender ASR rules visually." />
+  <meta name="twitter:image" content="https://asrconfigurator.pages.dev/og-image.png" />
+
+  <!-- Open Graph Image -->
+  <meta property="og:image" content="https://asrconfigurator.pages.dev/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="ASR Configurator - Microsoft Defender ASR Rules Tool" />
 
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="canonical" href="https://asrconfigurator.pages.dev/" />
+  <link rel="alternate" type="text/plain" href="https://asrconfigurator.pages.dev/llms.txt" title="LLM context file" />
+  <link rel="alternate" type="text/plain" href="https://asrconfigurator.pages.dev/llms-full.txt" title="Full LLM technical bundle" />
+
+  <!-- Structured Data: SoftwareApplication & FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://asrconfigurator.pages.dev/#software",
+        "name": "ASR Configurator",
+        "url": "https://asrconfigurator.pages.dev/",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Windows 10, Windows 11, Windows Server",
+        "description": "Interactive configuration tool for Microsoft Defender Attack Surface Reduction (ASR) rules. Export ready-to-run configurations for PowerShell, Group Policy (GPO), and Microsoft Intune.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Ashutosh Gautam",
+          "url": "https://github.com/Ashutoshgit47"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://asrconfigurator.pages.dev/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are Microsoft Defender Attack Surface Reduction (ASR) rules?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Attack Surface Reduction (ASR) rules are security features in Microsoft Defender that target risky software behaviors commonly exploited by cyber threats, such as executable files spawned from Office apps, obfuscated scripts, or credential theft from LSASS."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between Block and Audit mode in ASR?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Block mode (value 1) actively stops matching behaviors and logs Event ID 1121. Audit mode (value 2) allows the behavior while logging Event ID 1122, enabling administrators to evaluate impact on legitimate business applications before enforcement."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you deploy ASR rules using PowerShell, GPO, or Intune?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In PowerShell, run Set-MpPreference with -AttackSurfaceReductionRules_Ids and -AttackSurfaceReductionRules_Actions. In Group Policy, configure the administrative template under Computer Configuration -> Administrative Templates -> Windows Components -> Microsoft Defender Antivirus -> Attack Surface Reduction. In Microsoft Intune, deploy via Endpoint Security Attack Surface Reduction policies or custom OMA-URI profiles."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I monitor ASR rule blocks in Windows Event Viewer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Navigate to Applications and Services Logs > Microsoft > Windows > Windows Defender > Operational. Filter for Event ID 1121 for blocked actions or Event ID 1122 for audited actions."
+            }
+          }
+        ]
+      },
+      {
+        "@type": "HowTo",
+        "@id": "https://asrconfigurator.pages.dev/#howto",
+        "name": "How to Configure Microsoft Defender ASR Rules with PowerShell",
+        "description": "Step-by-step guide to testing in Audit mode and deploying Block mode for Microsoft Defender Attack Surface Reduction rules.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Audit Baseline",
+            "text": "Run Set-MpPreference with rule GUIDs set to AuditMode (value 2) to evaluate impact without blocking legitimate workflows."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Review Event Logs",
+            "text": "Inspect Windows Event Viewer under Applications and Services Logs > Microsoft > Windows > Windows Defender > Operational for Event ID 1122."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Enforce Block Mode",
+            "text": "Switch verified rules to Enabled (value 1) to actively prevent malicious child process execution and credential dumping."
+          }
+        ]
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://asrconfigurator.pages.dev/#rules-list",
+        "name": "Microsoft Defender Attack Surface Reduction Rules",
+        "description": "Complete catalog of 19 official Microsoft Defender ASR rules.",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Block abuse of exploited vulnerable signed drivers", "url": "https://asrconfigurator.pages.dev/?rule=56A863A9-875E-4185-98A7-B882C64B5CE5" },
+          { "@type": "ListItem", "position": 2, "name": "Block Adobe Reader from creating child processes", "url": "https://asrconfigurator.pages.dev/?rule=7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C" },
+          { "@type": "ListItem", "position": 3, "name": "Block all Office applications from creating child processes", "url": "https://asrconfigurator.pages.dev/?rule=D4F940AB-401B-4EFC-AADC-AD5F3C50688A" },
+          { "@type": "ListItem", "position": 4, "name": "Block credential stealing from LSASS", "url": "https://asrconfigurator.pages.dev/?rule=9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2" },
+          { "@type": "ListItem", "position": 5, "name": "Block executable content from email client and webmail", "url": "https://asrconfigurator.pages.dev/?rule=BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550" },
+          { "@type": "ListItem", "position": 6, "name": "Block executable files unless they meet prevalence/age/trusted list", "url": "https://asrconfigurator.pages.dev/?rule=01443614-CD74-433A-B99E-2ECDC07BFC25" },
+          { "@type": "ListItem", "position": 7, "name": "Block execution of potentially obfuscated scripts", "url": "https://asrconfigurator.pages.dev/?rule=5BEB7EFE-FD9A-4556-801D-275E5FFC04CC" },
+          { "@type": "ListItem", "position": 8, "name": "Block JavaScript/VBScript from launching downloaded executables", "url": "https://asrconfigurator.pages.dev/?rule=D3E037E1-3EB8-44C8-A917-57927947596D" },
+          { "@type": "ListItem", "position": 9, "name": "Block Office applications from creating executable content", "url": "https://asrconfigurator.pages.dev/?rule=3B576869-A4EC-4529-8536-B80A7769E899" },
+          { "@type": "ListItem", "position": 10, "name": "Block Office apps from injecting code into other processes", "url": "https://asrconfigurator.pages.dev/?rule=75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84" },
+          { "@type": "ListItem", "position": 11, "name": "Block Office communication apps from creating child processes", "url": "https://asrconfigurator.pages.dev/?rule=26190899-1602-49E8-8B27-EB1D0A1CE869" },
+          { "@type": "ListItem", "position": 12, "name": "Block persistence through WMI event subscription", "url": "https://asrconfigurator.pages.dev/?rule=E6DB77E5-3DF2-4CF1-B95A-636979351E5B" },
+          { "@type": "ListItem", "position": 13, "name": "Block process creations from PSExec and WMI commands", "url": "https://asrconfigurator.pages.dev/?rule=D1E49AAC-8F56-4280-B9BA-993A6D77406C" },
+          { "@type": "ListItem", "position": 14, "name": "Block untrusted and unsigned processes that run from USB", "url": "https://asrconfigurator.pages.dev/?rule=B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4" },
+          { "@type": "ListItem", "position": 15, "name": "Block Win32 API calls from Office macros", "url": "https://asrconfigurator.pages.dev/?rule=92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B" },
+          { "@type": "ListItem", "position": 16, "name": "Use advanced protection against ransomware", "url": "https://asrconfigurator.pages.dev/?rule=C1DB55AB-C21A-4637-BB3F-A12568109D35" },
+          { "@type": "ListItem", "position": 17, "name": "Block rebooting machine in Safe Mode", "url": "https://asrconfigurator.pages.dev/?rule=33DDEDF1-C6E0-47CB-833E-DE6133960387" },
+          { "@type": "ListItem", "position": 18, "name": "Block Webshell creation for Servers", "url": "https://asrconfigurator.pages.dev/?rule=A8F5898E-1DC8-49A9-9878-85004B8A61E6" },
+          { "@type": "ListItem", "position": 19, "name": "Block use of copied or impersonated system tools", "url": "https://asrconfigurator.pages.dev/?rule=C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB" }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <div style="font-family: system-ui, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.6; color: #1e293b;">
+      <h1>Microsoft Defender Attack Surface Reduction (ASR) Rules Configurator</h1>
+      <p>ASR Configurator is an open-source visual tool for generating PowerShell, Microsoft Intune, and Group Policy configurations for all 19 Microsoft Defender Attack Surface Reduction rules.</p>
+      <h2>Action Values &amp; Monitoring</h2>
+      <ul>
+        <li><strong>0 = Disabled:</strong> Rule inactive.</li>
+        <li><strong>1 = Block:</strong> Prevents action. Generates Event ID 1121 in Microsoft-Windows-Windows Defender/Operational.</li>
+        <li><strong>2 = Audit:</strong> Monitors action without blocking. Generates Event ID 1122 for testing impact.</li>
+      </ul>
+      <h2>19 Official ASR Rules</h2>
+      <ol>
+        <li><strong>Block abuse of exploited vulnerable signed drivers:</strong> <code>56A863A9-875E-4185-98A7-B882C64B5CE5</code> (System)</li>
+        <li><strong>Block Adobe Reader from creating child processes:</strong> <code>7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C</code> (App)</li>
+        <li><strong>Block all Office applications from creating child processes:</strong> <code>D4F940AB-401B-4EFC-AADC-AD5F3C50688A</code> (Office)</li>
+        <li><strong>Block credential stealing from LSASS:</strong> <code>9E6C4E1F-7D60-472F-BA1A-A39EF669E4B2</code> (Credential)</li>
+        <li><strong>Block executable content from email client and webmail:</strong> <code>BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550</code> (Email)</li>
+        <li><strong>Block executable files unless they meet prevalence/age/trusted list:</strong> <code>01443614-CD74-433A-B99E-2ECDC07BFC25</code> (App)</li>
+        <li><strong>Block execution of potentially obfuscated scripts:</strong> <code>5BEB7EFE-FD9A-4556-801D-275E5FFC04CC</code> (Script)</li>
+        <li><strong>Block JavaScript/VBScript from launching downloaded executables:</strong> <code>D3E037E1-3EB8-44C8-A917-57927947596D</code> (Web)</li>
+        <li><strong>Block Office applications from creating executable content:</strong> <code>3B576869-A4EC-4529-8536-B80A7769E899</code> (Office)</li>
+        <li><strong>Block Office apps from injecting code into other processes:</strong> <code>75668C1F-73B5-4CF0-BB93-3ECF5CB7CC84</code> (Office)</li>
+        <li><strong>Block Office communication apps from creating child processes:</strong> <code>26190899-1602-49E8-8B27-EB1D0A1CE869</code> (Email)</li>
+        <li><strong>Block persistence through WMI event subscription:</strong> <code>E6DB77E5-3DF2-4CF1-B95A-636979351E5B</code> (System)</li>
+        <li><strong>Block process creations from PSExec and WMI commands:</strong> <code>D1E49AAC-8F56-4280-B9BA-993A6D77406C</code> (Remote)</li>
+        <li><strong>Block untrusted and unsigned processes that run from USB:</strong> <code>B2B3F03D-6A65-4F7B-A9C7-1C7EF74A9BA4</code> (USB)</li>
+        <li><strong>Block Win32 API calls from Office macros:</strong> <code>92E97FA1-2EDF-4476-BDD6-9DD0B4DDDC7B</code> (Office)</li>
+        <li><strong>Use advanced protection against ransomware:</strong> <code>C1DB55AB-C21A-4637-BB3F-A12568109D35</code> (Ransomware)</li>
+        <li><strong>Block rebooting machine in Safe Mode:</strong> <code>33DDEDF1-C6E0-47CB-833E-DE6133960387</code> (System)</li>
+        <li><strong>Block Webshell creation for Servers:</strong> <code>A8F5898E-1DC8-49A9-9878-85004B8A61E6</code> (Server)</li>
+        <li><strong>Block use of copied or impersonated system tools:</strong> <code>C0033C00-D16D-4114-A5A0-DC9B3A7D2CEB</code> (System)</li>
+      </ol>
+      <p>Enable JavaScript to use the interactive generator, test presets, and export PowerShell scripts or Intune profiles.</p>
+    </div>
+  </noscript>
   <script type="module" src="/src/main.tsx"></script>
 
   <!-- Ko-fi floating widget -->

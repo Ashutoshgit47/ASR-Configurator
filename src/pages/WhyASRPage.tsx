@@ -78,9 +78,9 @@ export default function WhyASRPage() {
                 </tr>
                 <tr className="border-b border-border">
                   <td className="p-3">
-                    <code className="px-2 py-0.5 bg-chart-4/20 rounded text-chart-4 font-mono font-bold">2</code>
+                    <code className="px-2 py-0.5 bg-amber-500/20 rounded text-amber-500 font-mono font-bold">2</code>
                   </td>
-                  <td className="p-3 font-medium text-chart-4">Audit</td>
+                  <td className="p-3 font-medium text-amber-500">Audit</td>
                   <td className="p-3 text-muted-foreground">The ASR rule monitors only. The action is allowed but an event is logged. Use this to test rules before enforcing.</td>
                 </tr>
                 <tr>
