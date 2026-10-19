@@ -100,7 +100,8 @@ export default function AboutPage() {
           </h3>
           <div className="text-center">
             <p className="font-bold text-lg">Ashutosh Gautam</p>
-            <p className="text-muted-foreground mb-4">Cybersecurity Researcher & Developer</p>
+            <p className="text-muted-foreground mb-1">Cybersecurity Researcher & Developer</p>
+            <p className="text-sm text-muted-foreground/80 mb-4">Building tools. Solving problems. Securing systems.</p>
             <div className="flex justify-center gap-3 flex-wrap">
               <a
                 href="https://ashutosh47.pages.dev/"
