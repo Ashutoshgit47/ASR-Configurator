@@ -204,14 +204,27 @@
   <style>
     .floatingchat-container-wrap,
     .floatingchat-container-wrap-mobi {
-      right: 20px !important;
+      right: 16px !important;
       left: auto !important;
+      bottom: calc(var(--code-panel-height, 0px) + 12px) !important;
+      transition: bottom 0.2s ease-in-out, transform 0.2s ease-in-out !important;
+      z-index: 40 !important;
+    }
+
+    @media (max-width: 640px) {
+      .floatingchat-container-wrap,
+      .floatingchat-container-wrap-mobi {
+        right: 10px !important;
+        transform: scale(0.82) !important;
+        transform-origin: bottom right !important;
+      }
     }
 
     .floating-chat-kofi-popup-iframe,
     .floating-chat-kofi-popup-iframe-mobi {
       left: auto !important;
       right: 20px !important;
+      bottom: calc(var(--code-panel-height, 0px) + 72px) !important;
     }
   </style>
   <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>

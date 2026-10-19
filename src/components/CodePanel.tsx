@@ -70,6 +70,14 @@ export function CodePanel({ currentTab, setCurrentTab, generatedCode, onClear, o
     };
   }, [handleMouseMove, handleMouseUp]);
 
+  useEffect(() => {
+    const h = isCollapsed ? 44 : height;
+    document.documentElement.style.setProperty('--code-panel-height', `${h}px`);
+    return () => {
+      document.documentElement.style.removeProperty('--code-panel-height');
+    };
+  }, [height, isCollapsed]);
+
   return (
     <div
       ref={panelRef}
@@ -103,12 +111,19 @@ export function CodePanel({ currentTab, setCurrentTab, generatedCode, onClear, o
                   setCurrentTab(tab.id);
                   if (isCollapsed) setIsCollapsed(false);
                 }}
-                className={`flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium transition-colors rounded-md ${currentTab === tab.id
+                className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 text-xs font-medium transition-colors rounded-md whitespace-nowrap ${currentTab === tab.id
                   ? 'bg-primary/10 text-primary font-semibold'
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                   }`}
               >
-                {tab.label}
+                {tab.id === 'gpo' ? (
+                  <>
+                    <span className="hidden sm:inline">Group Policy</span>
+                    <span className="sm:hidden">GPO</span>
+                  </>
+                ) : (
+                  tab.label
+                )}
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="w-3 h-3 text-muted-foreground hidden sm:inline" />
