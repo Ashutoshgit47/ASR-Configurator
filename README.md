@@ -156,6 +156,7 @@ If ASR Configurator saved you time or hardened your infrastructure, consider sup
 <a href="https://buymeachai.ezee.li/ashutosh47"><img src="https://buymeachai.ezee.li/assets/images/buymeachai-button.png" alt="Buy Me A Chai" height="38"></a>&nbsp;&nbsp;
 <a href="https://ko-fi.com/Y8Y11V9RQ2"><img src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me A Coffee" height="38"></a>
 
+
 ---
 
 ## 📚 Official Microsoft Documentation
@@ -175,7 +176,8 @@ Distributed under the [MIT License](LICENSE).
 
 ## 👤 Author
 
-**Ashutosh Gautam** — Cybersecurity Researcher & Developer
+**Ashutosh Gautam** — Cybersecurity Researcher & Developer  
+*Building tools. Solving problems. Securing systems.*
 
 - 🌐 [Website](https://ashutosh47.pages.dev/)
 - 💻 [GitHub](https://github.com/Ashutoshgit47)

@@ -3,7 +3,10 @@
 > URL: https://asrconfigurator.pages.dev
 > Full Technical Bundle: https://asrconfigurator.pages.dev/llms-full.txt
 > GitHub: https://github.com/Ashutoshgit47/ASR-Configurator
-> Author: Ashutosh Gautam
+> Author: Ashutosh Gautam (Cybersecurity Researcher & Developer)
+> Tagline: Building tools. Solving problems. Securing systems.
+> Website: https://ashutosh47.pages.dev/
+> Last Updated: 2026-10-20
 
 ## Overview
 ASR Configurator is a client-side web application designed to help system administrators and security engineers configure, customize, and deploy Microsoft Defender Attack Surface Reduction (ASR) rules with confidence.

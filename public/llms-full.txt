@@ -3,8 +3,10 @@
 > Canonical URL: https://asrconfigurator.pages.dev
 > Context URL: https://asrconfigurator.pages.dev/llms.txt
 > GitHub: https://github.com/Ashutoshgit47/ASR-Configurator
-> Author: Ashutosh Gautam
-> Last Updated: 2026-10-19
+> Author: Ashutosh Gautam (Cybersecurity Researcher & Developer)
+> Tagline: Building tools. Solving problems. Securing systems.
+> Website: https://ashutosh47.pages.dev/
+> Last Updated: 2026-10-20
 
 ---
 
